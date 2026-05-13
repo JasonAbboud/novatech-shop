@@ -19,7 +19,7 @@ export default function ProductDetailsScreen() {
   const { id } = useLocalSearchParams();
   const product = PRODUCTS.find((p) => p.id === Number(id));
   const { addToCart } = useContext(CartContext);
-  const { t, formatPrice, language } = useLanguage();
+  const { t, formatPrice, language, currentLang} = useLanguage();
   if (!product) {
     return (
       <View style={styles.container}>
@@ -27,23 +27,22 @@ export default function ProductDetailsScreen() {
       </View>
     );
   }
-
   const handleAdd = () => {
     addToCart(product);
     Alert.alert(
       t('addedToCart'),
-      `${product.nom} ${t('addedSuccess')}`
+      `${product.nom[currentLang] ?? product.nom.fr} ${t('addedSuccess')}`
     );
   };
-
+  
   return (
     <View style={styles.screen}>
       <AppHeader userName="client" language={language === 'fr' ? 'Fr' : language === 'en' ? 'En' : 'Auto'}  />
 
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
         <Image source={{ uri: product.image }} style={styles.image} />
-        <Text style={styles.name}>{product.nom}</Text>
-        <Text style={styles.description}>{product.description}</Text>
+        <Text style={styles.name}>{product.nom[currentLang] ?? product.nom.fr}</Text>
+        <Text style={styles.description}>{product.description[currentLang] ?? product.description.fr}</Text>
         <Text style={styles.price}>{formatPrice(product.prix)}</Text>
 
         <Pressable style={styles.button} onPress={handleAdd}>

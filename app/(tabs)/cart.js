@@ -17,7 +17,7 @@ export default function CartScreen () {
   const { cart, increaseQty, decreaseQty, clearCart, total } =
     useContext(CartContext)
   const [showModal, setShowModal] = useState(false)
-  const { t, formatPrice, language } = useLanguage()
+  const { t, formatPrice, language, currentLang } = useLanguage()
   const handleBuy = () => {
     if (cart.length === 0) return
     setShowModal(true)
@@ -33,7 +33,7 @@ export default function CartScreen () {
       <Image source={{ uri: item.image }} style={styles.image} />
 
       <View style={styles.info}>
-        <Text style={styles.name}>{item.nom}</Text>
+        <Text style={styles.name}>{item.nom[currentLang] ?? item.nom.fr}</Text>
         <Text style={styles.meta}>
           {t('unitPrice')} : {formatPrice(item.prix)}
         </Text>

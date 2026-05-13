@@ -9,16 +9,16 @@ const i18n = new I18n(translations)
 i18n.enableFallback = true
 i18n.defaultLocale = 'fr'
 
-export function LanguageProvider({ children }) {
+export function LanguageProvider ({ children }) {
   const deviceLang = getLocales()[0].languageCode
   const [language, setLanguage] = useState('auto')
 
   const currentLang = language === 'auto' ? deviceLang : language
   i18n.locale = currentLang
 
-  const t = (key) => i18n.t(key)
+  const t = key => i18n.t(key)
 
-  const formatPrice = (price) => {
+  const formatPrice = price => {
     const locale = currentLang === 'fr' ? 'fr-CA' : 'en-CA'
     return new Intl.NumberFormat(locale, {
       style: 'currency',
@@ -27,12 +27,12 @@ export function LanguageProvider({ children }) {
   }
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t, formatPrice }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t, formatPrice, currentLang}}>
       {children}
     </LanguageContext.Provider>
   )
 }
 
-export function useLanguage() {
+export function useLanguage () {
   return useContext(LanguageContext)
 }
